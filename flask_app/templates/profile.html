@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+    <link rel="stylesheet" href="/static/homepage.css">
+</head>
+<body class="body" background="/static/images/comic-background.jpeg">
+    <div class="container">
+        <div class="page">
+            <div class="header">
+                <h1 class="web-title">Whats the Issue?</h1>
+                <h1>{{user.first_name}} {{user.last_name}}</h1>
+                <div class="web-descript">
+                    <a href="/posts/{{user.id}}" class="nav-button">Profile</a>
+                    <a href="/homepage" class="nav-button">Home</a>
+                    <a href="/logout" class="nav-button">Logout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-2">
+        <div class="post-format">
+            <div class="form-page">
+                <form action="/post/create/submit" method="post" class="new-tree-form">
+                    <h2 class="form-header">Tell us what you're reading!</h2>
+                    <div class="flash_message">
+                        {% with messages = get_flashed_messages() %}    
+                        {% if messages %}                            
+                            {% for message in messages %}            
+                                <p>{{message}}</p>                   
+                            {% endfor %}
+                        {% endif %}
+                        {% endwith %}
+                    </div>
+                    <div class="form-group">
+                        <label for="comic_name">Comic Name:</label>
+                        <input type="text" name="comic_name" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="content">Thoughts:</label>
+                        <textarea id="content" name="content" rows="3" cols="30" placeholder="Let us know your thoughts on this comic!"></textarea>
+                    </div>
+                    <input type="submit" value="Add Post" class="btn btn-success">
+                </form>
+            </div>
+            {% for post in posts %}
+            <div class="all-posts">
+                    <div class="post">
+                        <div class="post-content">
+                            <div class="name-and-comic">
+                            <a class="name" href="/posts/{{post.creator.id}}"><h3>{{post.creator.first_name}} {{post.creator.last_name}}</h3></a>
+                                <h2 class="comic-name">{{post.comic_name}}</h2>
+                            </div>
+                            <div class="content">
+                                <p>{{post.content}}</p>
+                            </div>
+                            <div class="form-page">
+                            <form action="/comment/create/submit/{{post.id}}" method="post" class="new-comment">
+                                <div class="form-group">
+                                    <label for="content">Comment:</label>
+                                    <textarea id="content" name="content" rows="3" cols="30"></textarea>
+                                </div>
+                                <input type="hidden" name="post_id" value="{{post.id}}">
+                                <input type="submit" value="Add-Comment" class="btn btn-success">
+                            </form>
+                        </div>
+                        <div class="comment-section">
+                            {% for comment in post.comments %}
+                                <div class="comment">
+                                    <p class="user-comment"><strong>{{ comment.user.first_name }} {{ comment.user.last_name }}: </strong>
+                                    <p class="comment-content"> {{ comment.content }}</p>
+                                </div>
+                            {% endfor %}
+                        </div>
+                
+                    </div>
+            {% endfor %}
+            </div>
+        </div>
+    </div>
+</body>
+</html>
