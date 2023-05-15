@@ -79,7 +79,7 @@ class Post:
             SELECT posts.*, users.first_name AS creator_first_name, users.last_name AS creator_last_name
             FROM posts
             JOIN users ON posts.user_id = users.id
-            WHERE posts.user_id = %(user_id)s;
+            WHERE posts.user_id = %(user_id)s ORDER BY posts.created_at DESC;
         """
 
         data = {"user_id": user_id}
@@ -113,22 +113,28 @@ class Post:
 
 
     @classmethod
-    def update_tree(cls, data):
-        query = "UPDATE trees SET species=%(species)s,location=%(location)s,reason=%(reason)s, date_planted=%(date_planted)s WHERE id = %(id)s;"
+    def update_post(cls, data):
+        query = "UPDATE posts SET comic_name=%(comic_name)s,content=%(content)s WHERE id = %(id)s;"
         result= connectToMySQL('whats_the_issue').query_db(query,data)
         return result
     
     @classmethod
-    def destroy(cls, data):
-        query = "DELETE FROM posts WHERE id = %(id)s;"
-        return connectToMySQL('whats_the_issue').query_db(query,data)
+    def destroy(cls, post_id):
+        query_delete_comments = "DELETE FROM comments WHERE post_id = %(post_id)s;"
+        query_delete_post = "DELETE FROM posts WHERE id = %(post_id)s;"
+        data = {
+            'post_id': post_id
+        }
+
+        connectToMySQL('whats_the_issue').query_db(query_delete_comments, data)
+        connectToMySQL('whats_the_issue').query_db(query_delete_post, data)
     
 
     @staticmethod
     def validate_new_post(data):
         is_valid = True
         if len(data['comic_name']) < 3:
-            flash("Species Name must be more than 3 Characters.")
+            flash("Comic Name must be more than 3 Characters.")
             is_valid = False
         if len(data['content']) < 2:
             flash("Content must be more than 2 characters.")

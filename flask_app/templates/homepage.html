@@ -55,6 +55,13 @@
                             <div class="content">
                                 <p>{{post.content}}</p>
                             </div>
+                            {% with messages = get_flashed_messages() %}    
+                                {% if messages %}                            
+                                    {% for message in messages %}            
+                                        <p>{{message}}</p>                   
+                                    {% endfor %}
+                                {% endif %}
+                            {% endwith %}
                             <div class="form-page">
                             <form action="/comment/create/submit/{{post.id}}" method="post" class="new-comment">
                                 <div class="form-group">

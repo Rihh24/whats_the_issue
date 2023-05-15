@@ -71,28 +71,36 @@ def submit_post():
     Post.save_post(data)
     return redirect('/homepage')
 
-
-@app.route('/trees/update/submit/<int:id>', methods=['POST'])
-def submit_update_tree(id):
+@app.route('/posts/update/<int:id>')
+def update_post_page(id):
     if 'user_id' not in session:
         return redirect('/')
-    if not Post.validate_new_tree(request.form):
-        return redirect(f'/trees/update/{id}')
+    user = User.get_id({"id":session['user_id']})
+    if not user:
+        return redirect('/logout')
+    return render_template('update_post.html',user=user, post=Post.get_one_post({'id': id}))
+
+
+@app.route('/posts/update/submit/<int:id>', methods=['POST'])
+def submit_update_post(id):
+    if 'user_id' not in session:
+        return redirect('/')
+    if not Post.validate_new_post(request.form):
+        return redirect(f'/posts/update/{id}')
     data={
         'id': id,
-        'species': request.form['species'],
-        'location': request.form['location'],
-        'reason': request.form['reason'],
-        'date_planted': request.form['date_planted'],
+        'comic_name': request.form['comic_name'],
+        'content': request.form['content']
     }
-    Post.update_tree(data)
-    return redirect('/trees')
+    Post.update_post(data)
+    return redirect('/homepage')
 
 
-@app.route('/trees/destroy/<int:id>')
+
+@app.route('/posts/destroy/<int:id>')
 def destroy(id):
-    data ={
-        'id': id
+    data = {
+        'post_id': id
     }
-    Post.destroy(data)
-    return redirect('/trees/user')
+    Post.destroy(id)
+    return redirect('/homepage')

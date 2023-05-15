@@ -14,6 +14,10 @@ def submit_comment(post_id):
 
     content = request.form['content']
     user_id = session['user_id']
+    
+    if len(content) < 5:
+        flash("Comment must have at least 5 characters")
+        return redirect('/homepage')
 
     connection = mysql.connector.connect(
         host='localhost',
@@ -31,6 +35,7 @@ def submit_comment(post_id):
     connection.close()
 
     return redirect('/homepage')
+
 
 @app.route('/post/<int:post_id>/comments')
 def show_comments(post_id):
