@@ -80,6 +80,10 @@
                                 </div>
                             {% endfor %}
                         </div>
+                        {% if session['user_id'] == post.creator.id%}
+                            <a class="nav-button" href="/posts/update/{{post.id}}">Edit</a>
+                            <a class="nav-button" href="/posts/destroy/{{post.id}}">Delete</a>
+                        {%endif%}
                 
                     </div>
             {% endfor %}

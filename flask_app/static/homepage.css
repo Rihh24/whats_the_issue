@@ -167,6 +167,12 @@ select {
     padding: 10px;
 }
 
+.nav-button{
+    font-family: Adventure;
+    -webkit-text-stroke: .5px black;
+    color:orangered;
+}
+
 .user-comment{
     font-family: Adventure;
     -webkit-text-stroke: .5px black;

@@ -4,10 +4,23 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Profile</title>
+    <link rel="stylesheet" href="/static/homepage.css">
 </head>
-<body>
-
+<body class="body" background="/static/images/comic-background.jpeg">
+    <div class="container">
+        <div class="page">
+            <div class="header">
+                <h1 class="web-title">Whats the Issue?</h1>
+                <h1>{{user.first_name}} {{user.last_name}}</h1>
+                <div class="web-descript">
+                    <a href="/posts/{{user.id}}" class="nav-button">Profile</a>
+                    <a href="/homepage" class="nav-button">Home</a>
+                    <a href="/logout" class="nav-button">Logout</a>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="container-2">
         <div class="post-format">
             <div class="form-page">
@@ -24,11 +37,11 @@
                     </div>
                     <div class="form-group">
                         <label for="comic_name">Comic Name:</label>
-                        <input type="text" name="comic_name" class="form-control">
+                        <input type="text" name="comic_name" class="form-control" value="{{post.comic_name}}">
                     </div>
                     <div class="form-group">
                         <label for="content">Thoughts:</label>
-                        <textarea id="content" name="content" rows="3" cols="30" placeholder="Let us know your thoughts on this comic!"></textarea>
+                        <textarea id="content" name="content" rows="3" cols="30" value="{{post.content}}" placeholder="{{post.content}}">{{post.content}}</textarea>
                     </div>
                     <input type="submit" value="Add Post" class="btn btn-success">
                 </form>
